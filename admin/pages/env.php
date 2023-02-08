@@ -1,6 +1,6 @@
 <?php
 
-    $project_name = 'Cmtc Library';
+    $project_name = 'cmtc_library';
     $site_name = 'Library'
 
 ?>

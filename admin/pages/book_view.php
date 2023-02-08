@@ -2,7 +2,7 @@
 
 include "../api/db.php";
   include dirname(__FILE__).'/layouts/isadmin.php';
-$sql = "SELECT * FROM staffs";
+$sql = "SELECT * FROM books";
 $stmt = $conn->prepare($sql);
 $stmt->execute();
 
@@ -15,23 +15,31 @@ foreach ($results as $result) {
     $data_in = array(
         'no' => $no,
         'id' => $result['id'],
-        'fullname' => $result['fullname'],
-        'username' => $result['username'],
-        'password' => $result['password'],
-        'position' => $result['position'],
+        'fullname' => $result['isbn'],
+        'username' => $result['name'],
+        'password' => $result['price'],
+        'author' => $result['author'],
+        'category_id' => $result['category_id'],
     );
     array_push($data_arr, $data_in);
 }
 
-if (isset($_POST['btn-del'])) {
-    $sql = "DELETE FROM staffs WHERE id = :id";
-    $stmt = $conn->prepare($sql);
-    $stmt->bindParam(':id', $id);
-    $id = $_POST['id'];
-    if ($stmt->execute()) {
-        header('location: ./staff_view.php');
-    }
+$sql = "SELECT * FROM categories";
+$stmt = $conn->prepare($sql);
+$stmt->execute();
+$results = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$category_arr = array();
+foreach ($results as $result) {
+    $data_in = array(
+        'id' => $result['id'],
+        'name' => $result['name'],
+    );
+    array_push($category_arr, $data_in);
 }
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -40,13 +48,13 @@ if (isset($_POST['btn-del'])) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php include "./layouts/css.php" ?>
-    <title><?= $site_name ?> | รายชื่อสมาชิกเจ้าหน้าที่</title>
+    <title><?= $site_name ?> | รายการหนังสือ</title>
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
     <div class="wrapper">
 
-        <?php include dirname(__FILE__) . '/layouts/preloader.php' ?>
+        <?php #include dirname(__FILE__) . '/layouts/preloader.php' ?>
 
         <?php include "./layouts/navbar.php" ?>
         <?php include "./layouts/sidebar.php" ?>
@@ -59,12 +67,12 @@ if (isset($_POST['btn-del'])) {
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">รายชื่อ</h1>
+                            <h1 class="m-0">รายการหนังสือ</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">รายชื่อ</li>
+                                <li class="breadcrumb-item active">รายการหนังสือ</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -76,7 +84,7 @@ if (isset($_POST['btn-del'])) {
             <section class="content">
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Category Details</h3>
+                        <h3 class="card-title">รายการหนังสือ</h3>
                     </div>
                     <div class="card-body">
                         <div id="example1_wrapper" class="dataTables_wrapper dt-bootstrap4">
@@ -86,10 +94,11 @@ if (isset($_POST['btn-del'])) {
                                         <thead>
                                             <tr>
                                                 <th class="sorting sorting_asc" tabindex="0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">No.</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Fullname</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Username</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Password</th>
-                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Position</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">ISBN</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Name</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Price</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Author</th>
+                                                <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Category</th>
                                                 <th class="sorting" tabindex="0" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Action</th>
                                             </tr>
                                         </thead>
@@ -107,13 +116,13 @@ if (isset($_POST['btn-del'])) {
                                                             <?= $data_arr[$i]['username'] ?>
                                                         </td>
                                                         <td><?= $data_arr[$i]['password'] ?></td>
+                                                        <td><?= $data_arr[$i]['author'] ?></td>
+                                                        <td><?= $category_arr[$data_arr[$i]['category_id'] - 1]['name'] ?></td>
                                                         <td>
-                                                            <?= $data_arr[$i]['position'] == 1 ? 'เจ้าหน้าที่' : 'บรรณารักษ์' ?>
-                                                        </td>
-                                                        <td>
+
                                                             <div class="row">
                                                                 <div class="col-6">
-                                                                    <a href="staff_edit.php?id=<?= $data_arr[$i]['id'] ?>" class="btn btn-primary w-100">Edit</a>
+                                                                    <a href="book_edit.php?id=<?= $data_arr[$i]['id'] ?>" class="btn btn-primary w-100">Edit</a>
                                                                 </div>
                                                                 <div class="col-6">
                                                                     <form action="" method="post">
@@ -148,7 +157,7 @@ if (isset($_POST['btn-del'])) {
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print"]
+                "buttons": ["copy", "csv", "excel", "pdf", "print", ]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
         })
 

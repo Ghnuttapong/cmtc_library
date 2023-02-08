@@ -1,9 +1,30 @@
 <?php
+include "../api/db.php";
 
-    session_start();
-    $_SESSION['username'] = 'test';
-    $_SESSION['role'] = 'admin';
+  include dirname(__FILE__).'/layouts/isadmin.php';
+$id = $_SESSION['user_id'];
+$sql = "SELECT * FROM staffs WHERE id = :id";
+$stmt = $conn->prepare($sql);
+$stmt->bindParam(':id', $id);
+$stmt->execute();
+$result = $stmt->fetch(PDO::FETCH_ASSOC);
 
+if (isset($_POST['profile-btn-update'])) {
+    $password_new = $_POST['password_new'];
+    $password_current = $_POST['password_current'];
+
+
+    if ($password_current != $result['password']) {
+        $msg_err = "Current password not valid.";
+    } else {
+        $update_sql = "UPDATE staffs SET password = :password  WHERE id = :id";
+        $update_sql = $conn->prepare($insert_sql);
+
+        $update_sql->bindParam(':password', $password_new);
+        $update_sql->execute();
+        $msg_suc = "Updated successful.";
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +75,8 @@
                                 <div class="card-body box-profile">
                                     <!-- --------------------------------- profile image ----------------------------------------- -->
                                     <!-- <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle" src="./images/profile/<?php #$_SESSION['profile-picture'] ?>" width="80" height="80" alt="User profile picture">
+                                        <img class="profile-user-img img-fluid img-circle" src="./images/profile/<?php #$_SESSION['profile-picture'] 
+                                                                                                                    ?>" width="80" height="80" alt="User profile picture">
                                     </div> -->
                                     <!-- --------------------------------- profile image ----------------------------------------- -->
                                     <h3 class="profile-username text-center"><?= $_SESSION['username'] ?></h3>
@@ -62,8 +84,6 @@
                                         <p class="login-box-msg text-danger"><?php echo $msg_err ?></p>
                                     <?php } elseif (isset($msg_suc)) { ?>
                                         <p class="login-box-msg text-success"><?php echo $msg_suc ?></p>
-                                    <?php } else { ?>
-                                        <p class="text-muted text-center"><?= $_SESSION['role'] ?></p>
                                     <?php } ?>
                                     <ul class="list-group list-group-unbordered mb-3">
                                         <li class="list-group-item">
@@ -71,22 +91,13 @@
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="exampleInputFile">Current Password</label>
-                                                        <input type="password" required name="profile-input-current" class="form-control form-control-border border-width-2" placeholder="Current Password">
+                                                        <input type="password" required name="password-current" class="form-control form-control-border border-width-2" placeholder="Current Password">
                                                     </div>
                                                 </div>
                                                 <div class="col-6">
                                                     <div class="form-group">
                                                         <label for="exampleInputFile">New Password</label>
-                                                        <input type="password" required name="profile-input-new" class="form-control form-control-border border-width-2" placeholder="New Password">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="exampleInputFile">Picture</label>
-                                                <div class="input-group">
-                                                    <div class="custom-file">
-                                                        <input accept=".jpg, .jpeg, .png" type="file" name="profile-input-picture" class="custom-file-input" id="exampleInputFile">
-                                                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                                                        <input type="password" required name="password-new" class="form-control form-control-border border-width-2" placeholder="New Password">
                                                     </div>
                                                 </div>
                                             </div>

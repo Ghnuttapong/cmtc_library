@@ -1,3 +1,39 @@
+<?php
+include "../api/db.php";
+  include dirname(__FILE__).'/layouts/isadmin.php';
+
+if (isset($_POST['btn-save'])) {
+
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $fullname = $_POST['fullname'];
+    $phone = $_POST['phone'];
+    $position = $_POST['position'];
+
+    $check_sql = "SELECT * FROM members WHERE username = :username";
+    $check_stmt = $conn->prepare($check_sql);
+    $check_stmt->bindParam(':username', $username);
+    $check_stmt->execute();
+
+    if ($check_stmt->rowCount() > 0) {
+        $msg_err = "Username already exists.";
+    } else {
+        $insert_sql = "INSERT INTO members (username, password, fullname, phone, position)
+        VALUES (:username, :password, :fullname, :phone, :position)";
+
+        $insert_stmt = $conn->prepare($insert_sql);
+
+        $insert_stmt->bindParam(':username', $username);
+        $insert_stmt->bindParam(':password', $password);
+        $insert_stmt->bindParam(':fullname', $fullname);
+        $insert_stmt->bindParam(':phone', $phone);
+
+        $insert_stmt->execute();
+        $msg_suc = "Inserted successful.";
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +41,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?php include "./layouts/css.php" ?>
-    <title><?php echo $site_name ?> | บทความ</title>
+    <title><?php echo $site_name ?> | เพิ่มสมาชิก</title>
 </head>
 
 <body class="hold-transition dark-mode sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
@@ -24,12 +60,12 @@
                 <div class="container-fluid">
                     <div class="row mb-2">
                         <div class="col-sm-6">
-                            <h1 class="m-0">เพิ่มบทความ</h1>
+                            <h1 class="m-0">เพิ่มข้อมูล</h1>
                         </div><!-- /.col -->
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
                                 <li class="breadcrumb-item"><a href="#">Home</a></li>
-                                <li class="breadcrumb-item active">เพิ่มบทความ</li>
+                                <li class="breadcrumb-item active">เพิ่มข้อมูล</li>
                             </ol>
                         </div><!-- /.col -->
                     </div><!-- /.row -->
@@ -39,12 +75,8 @@
 
             <!-- Main content -->
             <section class="content">
-                <form action="" method="post" enctype="multipart/form-data">
+                <form action="" method="post">
                     <div class="card">
-                        <div class="card-header">
-                            <h3 class="card-title">Form artical</h3>
-                        </div>
-
                         <div class="card-body">
                             <?php if (isset($msg_err)) { ?>
                                 <div class="alert alert-danger" role="alert"><?php echo $msg_err ?></div>
@@ -55,39 +87,35 @@
                             <div class="row">
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="exampleInputFile">Title</label>
-                                        <input type="text" required name="article-input-title" class="form-control form-control-border border-width-2" id="exampleInputBorderWidth2" placeholder="Title">
+                                        <label for="username">Username</label>
+                                        <input type="text" required name="username" class="form-control form-control-border border-width-2" placeholder="Username">
                                     </div>
                                 </div>
                                 <div class="col-6">
                                     <div class="form-group">
-                                        <label for="exampleSelectBorderWidth2">Categories Select</label>
-                                        <select required class="custom-select form-control-border border-width-2" id="exampleSelectBorderWidth2" name="article-select-category">
-                                            <option value="test">test</option>
-                                        </select>
+                                        <label for="password">Password</label>
+                                        <input type="password" required name="password" class="form-control form-control-border border-width-2" placeholder="Password">
                                     </div>
                                 </div>
-                                <div class="col-12">
+                                <div class="col-4">
                                     <div class="form-group">
-                                        <label for="summernote">Detail</label>
-                                        <textarea required name="article-input-detail" id="summernote"></textarea>
+                                        <label for="fullname">Fullname</label>
+                                        <input type="text" required name="fullname" class="form-control form-control-border border-width-2" placeholder="Fullname">
                                     </div>
                                 </div>
-                                <div class="col-5">
+                                <div class="col-4">
                                     <div class="form-group">
-                                        <label for="exampleInputFile">Picture</label>
-                                        <div class="input-group">
-                                            <div class="custom-file">
-                                                <input required type="file" name="article-input-picture[]" class="custom-file-input" id="exampleInputFile">
-                                                <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                                            </div>
-                                        </div>
+                                        <label for="phone">Phone</label>
+                                        <input type="text" required name="phone" class="form-control form-control-border border-width-2" placeholder="Phone">
                                     </div>
                                 </div>
+
+
+
                             </div>
                         </div>
                         <div class="card-footer">
-                            <input type="submit" name="article-btn-add" class="btn btn-success w-50 float-right" value="Save">
+                            <input type="submit" name="btn-save" class="btn btn-success w-50 float-right" value="Save">
                         </div>
                     </div>
                 </form>
@@ -100,25 +128,6 @@
     <!-- ./wrapper -->
 
     <?php include './layouts/script.php' ?>
-    <script>
-        $(document).ready(function() {
-            $('#summernote').summernote({
-                placeholder: 'Article details...',
-                tabsize: 2,
-                height: 500,
-                toolbar: [
-                    ['style', ['style']],
-                    ['font', ['bold', 'underline', 'clear']],
-                    ['color', ['color']],
-                    ['para', ['ul', 'ol', 'paragraph']],
-                    ['table', ['table']],
-                    ['insert', ['link', 'picture', 'video']],
-                    ['view', ['fullscreen', 'codeview', 'help']]
-                ]
-            });
-            bsCustomFileInput.init();
-        });
-    </script>
 </body>
 
 </html>
