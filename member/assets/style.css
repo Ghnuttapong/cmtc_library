@@ -1,0 +1,143 @@
+body {
+  background-color: #e3cfac !important ;
+}
+nav {
+  height: 100px;
+  width: 100%;
+}
+.library-footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #a57f54;
+  z-index: 999;
+  height: 100px;
+}
+.highlight-book {
+  margin-top: 50px;
+}
+h1.title {
+  height: 100px !important;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  margin: 0px 40px;
+  align-content: center;
+}
+.card {
+  border-radius: 10px;
+}
+img .book-card {
+  display: inline-block;
+  width: 150px;
+  height: 200px;
+  margin-right: 1rem;
+}
+
+.book-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.icon-search {
+  width: 40px;
+}
+.wrap {
+  display: inline-grid;
+  justify-items: center;
+}
+button {
+  border: none;
+  background: none;
+}
+/*.background {
+  border-radius: 100%;
+  position: absolute;
+  left: -400px;
+  top: -1400px;
+  width: 953px;
+  height: 953px;
+  background: #e3cfac;
+}*/
+.content {
+  position: relative;
+  z-index: 100;
+  margin-bottom: 150px;
+}
+.title {
+  color: #fff;
+}
+.wrap:active {
+  background-color: #e3cfac;
+  border-radius: 10px;
+  padding: 5px;
+}
+.wrap:hover {
+  background-color: #e3cfac;
+  border-radius: 10px;
+  padding: 5px;
+}
+.account {
+  display: inline-flex;
+  justify-content: center;
+}
+.card-img-top {
+  width: min-content;
+}
+.box-profile {
+  background-color: #a57f54;
+  height: fit-content;
+  width: fit-content;
+  border-radius: 20px;
+  padding: 20px;
+  margin-left: 500px;
+}
+h5 {
+  color: #fff;
+}
+a {
+  text-decoration: none !important;
+}
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+input[type="text"] {
+  width: 500px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  border: 1px solid gray;
+}
+
+input[type="submit"] {
+  width: fit-content;
+  padding: 10px;
+  background-color: #e3cfac;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+input[type="submit"]:hover {
+  background-color: darkblue;
+}
+.logout-edit {
+  margin-top: 50px !important;
+}
+.bt-pf {
+  background-color: #a57f54;
+  padding: 10px;
+  border-radius: 5px;
+}
+.bt-pf a {
+  color: #fff;
+}
+
