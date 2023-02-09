@@ -180,8 +180,9 @@ class db
     {
         $due_date = date('Y-m-d h:i:s', strtotime('+7 day'));
         $current_date = date('Y-m-d h:i:s');
-        
-
-        return '';
+        $sql = "INSERT INTO orders(borrow_at, due_at, member_id, book_id) VALUE(?, ?, ?, ?)";
+        $stmt = $this->conn->prepare($sql);
+        $stmt->execute([$current_date, $due_date, $member_id, $book_id]);
+        return 1;
     }
 }
