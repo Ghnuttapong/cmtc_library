@@ -3,7 +3,16 @@ include './backend/session.php';
 include './backend/func.php';
 $db = new db;
 $id = $_SESSION['user_id'];
-$profile  = $db->select_manual('members', ['*'], ['id'], [$id])
+$profile  = $db->select_manual('members', ['*'], ['id'], [$id]);
+
+if(isset($_POST['btn-profile'])) {
+    $password = $_POST['password'];
+    $fullname = $_POST['fullname'];
+    $phone = $_POST['phone'];
+
+    $result = $db->update_where('members', ['password', 'fullname', 'phone'], [$password, $fullname, $phone, $_SESSION['user_id']], 'id');
+    $msg_suc = 'อัพเดทสำเร็จ';
+}
 
 ?>
 <!--header !-->
@@ -19,23 +28,28 @@ $profile  = $db->select_manual('members', ['*'], ['id'], [$id])
 
         <!--showbook-top & form !-->
         <div class="row box-profile">
-            <form method="post" action="<?php $_PHP_SELF ?>">
+            <?php if(isset($msg_suc)) { ?>
+            <div class="alert alert-success">
+                <b><?= $msg_suc ?></b>
+            </div>
+            <?php } ?>
+            <form method="post" action="">
                 <table width="400" border="0" cellspacing="1" cellpadding="2">
                     <tr>
                         <td class="title-edpf" width="100">Username</td>
-                        <td><input name="usename" type="text" id="member_id"></td>
+                        <td><input name="usename" disabled value="<?= $profile[0]['username'] ?>" type="text" id="member_id"></td>
                     </tr>
                     <tr>
                         <td class="title-edpf" width="100">Password</td>
-                        <td><input name="password" type="text" id="name"></td>
+                        <td><input name="password"value="<?= $profile[0]['password'] ?>" type="text" id="name"></td>
                     </tr>
                     <tr>
                         <td class="title-edpf" width="100">Fullname</td>
-                        <td><input name="fullname" type="text" id="email"></td>
+                        <td><input name="fullname" type="text" value="<?= $profile[0]['fullname'] ?>" id="email"></td>
                     </tr>
                     <tr>
                         <td class="title-edpf" width="100">Phone</td>
-                        <td><input name="phone" type="text" id="email"></td>
+                        <td><input name="phone" type="text" value=<?= $profile[0]['phone'] ?> id="email"></td>
                     </tr>
                     <tr>
                         <td width="100"> </td>
@@ -44,7 +58,7 @@ $profile  = $db->select_manual('members', ['*'], ['id'], [$id])
                     <tr>
                         <td width="100"> </td>
                         <td>
-                            <input name="update" type="submit" id="update" value="Update">
+                            <input name="btn-profile" type="submit" id="update" value="Update">
                         </td>
                     </tr>
                 </table>

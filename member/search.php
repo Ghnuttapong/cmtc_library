@@ -1,3 +1,20 @@
+<?php
+
+include './backend/session.php';
+include "./backend/func.php";
+
+$db = new db;
+
+// search keyword
+if (isset($_GET['keyword'])) {
+    $books = $db->search_data('books', ['*'], ['name'], [$_GET['keyword']]);
+} else {
+    // book all 
+    $books = $db->select_manaul_field('books', ['*']);
+}
+
+
+?>
 <!--header !-->
 <?php include 'header.php' ?>
 <nav></nav>
@@ -10,17 +27,13 @@
 
 
         <!--form & show(table-PHP)-->
-        <?php
-        $due_date = date('Y-m-d h:i:s', strtotime('+7 day'));
-        $current_date = date('Y-m-d h:i:s');
-        ?>
         <div class="row wrap-search-table">
 
             <!-- input search !-->
             <div class="col-6">
                 <div class="row box-profile">
                     <div class="search-container">
-                        <form method="get" action="book.php">
+                        <form method="get" action="">
                             <input type="text" name="keyword" required>
                             <input type="submit" value="Search">
                         </form>
@@ -39,13 +52,17 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">isbn</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                        </tr>
-
+                        <?php $i = 0; foreach ($books as $book) { ?>
+                            <?php 
+                              $cateogry_name =  $db->select_manual('categories', ['*'], ['id'], [$book['category_id']]);
+                            ?>
+                            <tr>
+                                <th scope="row"><?= $book['isbn'] ?></th>
+                                <td><?= $book['name'] ?></td>
+                                <td><?= $book['price'] ?></td>
+                                <td><?= $cateogry_name[0]['name'] ?></td>
+                            </tr>
+                        <?php } ?>
                     </tbody>
                 </table>
             </div>

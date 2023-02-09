@@ -5,14 +5,7 @@ include "./backend/func.php";
 
 $db = new db;
 
-// search keyword
-if (isset($_GET['keyword'])) {
-    $books = $db->search_data('books', ['*'], ['name'], [$_GET['keyword']]);
-} else {
-    // book all 
-    $books = $db->select_manaul_field('books', ['*']);
-}
-
+$histories = $db->select_belong('orders', 'books', '*', 'orders.book_id = books.id', ['orders.member_id'], [$_SESSION['user_id']])
 
 ?>
 <!--header !-->
@@ -29,14 +22,15 @@ if (isset($_GET['keyword'])) {
         <!--ShowAll book !-->
         <div class="row">
             <h5>Borrowed Items</h5>
-            <?php foreach ($books as $book) { ?>
+
+            <?php foreach ($histories as $history) { ?>
                 <div class="col-md-3">
                     <div class="card">
                         <img src="./assets/img/cover-book.png" class="card-img-top" alt="...">
                         <div class="card-body">
-                            <h5 class="card-title"><?= $book['name'] ?></h5>
-                            <p class="card-text"><?= $book['price'] ?></p>
-                            <a href="#" class="btn btn-Warning">สถานะ</a>
+                            <h5 class="card-title"><?= $history['name'] ?></h5>
+                            <p class="card-text"><?= $history['price'] ?></p>
+                            <p class="btn btn-Warning">สถานะ: <span class="text-success"><?= $history['return_at'] != null ? 'คืนแล้ว' : 'ยืม'  ?> </span></p>
                         </div>
                     </div>
                 </div>
@@ -44,17 +38,22 @@ if (isset($_GET['keyword'])) {
         </div>
         <div class="row margin-BH">
             <h5>Borrowing History</h5>
-            <?php foreach ($books as $book) { ?>
-                <div class="col-md-3">
-                    <div class="card">
-                        <img src="./assets/img/cover-book.png" class="card-img-top" alt="...">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= $book['name'] ?></h5>
-                            <p class="card-text"><?= $book['price'] ?></p>
-                            <a href="#" class="btn btn-Warning">สถานะ</a>
+            <?php if(empty($histories)) { ?>
+                    <p>ยังไม่มีประวัติการทำรายการ</p>
+            <?php } ?>
+            <?php foreach ($histories as $history) { ?>
+                <?php if ($history['return_at'] != null) { ?>
+                    <div class="col-md-3">
+                        <div class="card">
+                            <img src="./assets/img/cover-book.png" class="card-img-top" alt="...">
+                            <div class="card-body">
+                                <h5 class="card-title"><?= $history['name'] ?></h5>
+                                <p class="card-text"><?= $history['price'] ?></p>
+                                <a href="#" class="btn btn-Warning">สถานะ: <span class="text-success">คืนแล้ว</span></a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             <?php } ?>
         </div>
     </div>

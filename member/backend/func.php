@@ -83,7 +83,7 @@ class db
         $sql = 'SELECT ' . $select_field . ' FROM ' . $table . ' LEFT JOIN ' . $belong_table . ' ON ' . $on . ' WHERE ' . implode(' = ? AND ', $where_arr) . ' = ?';
         $stmt = $this->conn->prepare($sql);
         $stmt->execute($where_value_arr);
-        $result = $stmt->fetch();
+        $result = $stmt->fetchAll();
         return $result;
     }
 
