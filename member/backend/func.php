@@ -180,8 +180,8 @@ class db
     {
         $due_date = date('Y-m-d h:i:s', strtotime('+7 day'));
         $current_date = date('Y-m-d h:i:s');
-
         
+
         return '';
     }
 }
