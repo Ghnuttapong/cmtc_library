@@ -1,7 +1,7 @@
 <?php 
 
-    $dbuser = 'root';
-    $dbpass = '';
+    $dbuser = 'gfp';
+    $dbpass = '1234';
     $dbname = 'cmtc_library';
     $dbhost = 'localhost';
 
