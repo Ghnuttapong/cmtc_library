@@ -8,8 +8,8 @@ class db
 
     function __construct()
     {
-        $dbuser = 'root';
-        $dbpass = '';
+        $dbuser = 'gfp';
+        $dbpass = '1234';
         $dbname = 'cmtc_library';
         $dbhost = 'localhost';
 
