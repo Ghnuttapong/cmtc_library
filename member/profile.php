@@ -32,8 +32,8 @@ $profile  =$db->select_manual('members', ['*'], ['id'], [$id])
         <div class="col-1">
         <button class="bt-pf"><a href="./logout.php">Logout</a></button>
         </div>
-        <div class="col-2">
-        <button class="bt-pf"><a href="#">Edit Profile</a></button>
+        <div class="col-3">
+        <button class="bt-pf"><a href="./editprofile.php">Edit Profile</a></button>
         </div>
     </div>
 

@@ -96,7 +96,7 @@ button {
   margin-left: 500px;
 }
 h5 {
-  color: #fff;
+  color: #000;
 }
 a {
   text-decoration: none !important;
@@ -127,7 +127,8 @@ input[type="submit"] {
 }
 
 input[type="submit"]:hover {
-  background-color: darkblue;
+  background-color: #fff;
+  color: #111;
 }
 .logout-edit {
   margin-top: 50px !important;
@@ -139,5 +140,22 @@ input[type="submit"]:hover {
 }
 .bt-pf a {
   color: #fff;
+}
+.bt-pf a:hover {
+  color: #fff;
+}
+.bt-pf a:active {
+  color: #fff;
+}
+.title-edpf {
+  color: #fff;
+}
+.card-title {
+  color: #000 !important;
+}
+.margin-BH {
+  margin-top: 100px !important;
+  margin-bottom: 50px !important;
+
 }
 

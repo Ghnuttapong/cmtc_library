@@ -28,6 +28,7 @@ if (isset($_GET['keyword'])) {
 
         <!--ShowAll book !-->
         <div class="row">
+            <h5>Borrowed Items</h5>
             <?php foreach ($books as $book) { ?>
                 <div class="col-md-3">
                     <div class="card">
@@ -35,7 +36,22 @@ if (isset($_GET['keyword'])) {
                         <div class="card-body">
                             <h5 class="card-title"><?= $book['name'] ?></h5>
                             <p class="card-text"><?= $book['price'] ?></p>
-                            <a href="#" class="btn btn-danger">ยืม</a>
+                            <a href="#" class="btn btn-Warning">สถานะ</a>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
+        </div>
+        <div class="row margin-BH">
+            <h5>Borrowing History</h5>
+            <?php foreach ($books as $book) { ?>
+                <div class="col-md-3">
+                    <div class="card">
+                        <img src="./assets/img/cover-book.png" class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= $book['name'] ?></h5>
+                            <p class="card-text"><?= $book['price'] ?></p>
+                            <a href="#" class="btn btn-Warning">สถานะ</a>
                         </div>
                     </div>
                 </div>
