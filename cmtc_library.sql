@@ -3,11 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
-<<<<<<< HEAD
--- Generation Time: Feb 09, 2023 at 05:07 AM
-=======
--- Generation Time: Feb 09, 2023 at 05:10 AM
->>>>>>> main
+-- Generation Time: Mar 03, 2023 at 04:37 AM
 -- Server version: 10.4.25-MariaDB
 -- PHP Version: 8.1.10
 
@@ -87,7 +83,7 @@ CREATE TABLE `members` (
 --
 
 INSERT INTO `members` (`id`, `username`, `password`, `fullname`, `phone`) VALUES
-(1, 'test', '1234', 'test', '1234567'),
+(1, 'test', '1234', 'test', '123458'),
 (2, 'asdfd', 'asdfs', 'asdf', 'sdf');
 
 -- --------------------------------------------------------
@@ -111,7 +107,9 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`id`, `borrow_at`, `return_at`, `due_at`, `fine`, `member_id`, `book_id`) VALUES
-(1, '2023-02-08 08:08:07', '2023-02-07 21:55:13', NULL, 10, 1, 1);
+(1, '2023-02-08 08:08:07', '0000-00-00 00:00:00', NULL, 10, 1, 1),
+(2, '2023-02-09 02:02:23', NULL, '2023-02-16 02:02:23', 0, 1, 2),
+(3, '2023-02-09 02:02:48', NULL, '2023-02-16 02:02:48', 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -196,7 +194,7 @@ ALTER TABLE `members`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `staffs`
